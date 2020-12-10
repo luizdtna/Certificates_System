@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{%block title%} Certificados {%endblock title%}
+
+{%block main%}
+<h2>Person Name</h2>
+
+
+{%for i in date%}
+
+<div class="media mt-3">
+    <a href="{{ i.certificate.url }}">
+        <img class="mr-3" src="{% static 'img/certificate_img.png'%}" alt="Icone Certificado" width="150">
+    </a>
+    <div class="media-body">
+        <h5 class="mt-0">{{i.certificateTitle}}</h5>
+
+        <p>Data: {{i.update_date}}</p>
+    </div>
+</div>
+{%empty%}
+<div class="alert alert-warning" role="alert">
+  Você não possui arquivos para serem exibidos
+</div>
+
+{%endfor%}
+
+
+{%endblock main%}

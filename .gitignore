@@ -1,0 +1,11 @@
+
+venv/bin/__pycache__/
+
+venv/lib/python3.8/site-packages/__pycache__/
+
+venv
+.idea
+
+__pycache__
+db.sqlite3
+uploads
