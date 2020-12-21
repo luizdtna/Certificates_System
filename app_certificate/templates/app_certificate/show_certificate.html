@@ -4,7 +4,8 @@
 {%block title%} Certificados {%endblock title%}
 
 {%block main%}
-<h2>Person Name</h2>
+
+<h2>{{user.first_name|title}}</h2>
 
 
 {%for i in date%}
@@ -14,9 +15,9 @@
         <img class="mr-3" src="{% static 'img/certificate_img.png'%}" alt="Icone Certificado" width="150">
     </a>
     <div class="media-body">
-        <h5 class="mt-0">{{i.certificateTitle}}</h5>
+        <h5 class="mt-0">{{i.certificateTitle|title}}</h5>
 
-        <p>Data: {{i.update_date}}</p>
+        <p>Data: {{i.update_date|date:"d/m/Y"}}</p>
     </div>
 </div>
 {%empty%}
@@ -27,4 +28,4 @@
 {%endfor%}
 
 
-{%endblock main%}
+{%endblock%}

@@ -17,10 +17,21 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from app_certificate.views import ShowCertificate
+from app_certificate import urls as certificates_urls
 from app_management import urls as managements_url
+from django.views.generic.base import TemplateView
+from django.contrib.auth import views as auth_views
+from app_certificate.views import My_Login
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('certificado/<int:pk>/',ShowCertificate.as_view()),
-    path('gerenciar/',include(managements_url))
+    path('',TemplateView.as_view(template_name='home.html'), name = 'home_url'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('certificado/',include(certificates_urls)),
+    path('gerenciar/',include(managements_url)),
+
+    path('login/', My_Login.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout_url'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

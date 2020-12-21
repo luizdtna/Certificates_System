@@ -56,7 +56,7 @@ ROOT_URLCONF = 'projeto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'], #Para encontrar templates na pasta raiz
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], #Para encontrar templates na pasta raiz
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,7 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATICFILES_DIRS = [
-   'statics',
+   'statics', #Quando o django procurar por arquivos estáticos
+    # (imagens, css,js...), vai procurar nesse arquivo, na Raiz
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -128,3 +129,9 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = 'uploads'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/certificado/'
+
+
+AUTH_USER_MODEL = 'app_certificate.CustomUser'

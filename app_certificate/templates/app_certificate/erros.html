@@ -1,0 +1,13 @@
+{%extends 'base.html'%}
+
+{%block title%}Erro{%endblock%}
+
+{%block main%}
+
+<div class="alert alert-danger" role="alert">
+    {%for erro in erros %}
+    {{erro}}<br>
+    {%endfor%}
+</div>
+<a class="btn btn-primary" href="{%url 'certificado_url'%}">Voltar</a>
+{%endblock%}
