@@ -3,6 +3,13 @@
 
 {%block main%}
 
+{%if success%}
+
+<div class="alert alert-success" role="alert">
+    Todos os Registros foram salvos com sucesso!
+</div>
+{%endif%}
+
 <form method="post" enctype="multipart/form-data">
     {%csrf_token%}
 

@@ -5,7 +5,7 @@ from .views import FileFieldView
 
 urlpatterns = [
 
-    path('uploadcertificados/',FileFieldView.as_view(), name = 'uploadcertificados_url'),
+    #path('uploadcertificados/',FileFieldView.as_view(), name = 'uploadcertificados_url'),
 
 
 ]
