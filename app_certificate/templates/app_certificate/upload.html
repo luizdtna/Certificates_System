@@ -1,5 +1,6 @@
 {%extends 'base.html'%}
-
+{% load bootstrap %}
+{%load static%}
 
 {%block main%}
 
@@ -13,8 +14,48 @@
 <form method="post" enctype="multipart/form-data">
     {%csrf_token%}
 
-    {{form.as_p}}
-    <input type="submit" name="Enviar">
+    {{form.certificateTitle|bootstrap}}
+    {{form.date|bootstrap}}
+    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg">
+        <i class="fas fa-question"></i>
+    </button>
+    {{form.people|bootstrap}}
+
+    {{form.separador|bootstrap}}
+    {{form.certificates|bootstrap}}
+    <button type="submit" class="btn btn-success">Enviar</button>
 </form>
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Como criar o arquivo de pessoas</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Crie uma planilha com duas colunas, a esquerda coloque os nomes e a direita coloque os emails
+                    <br>
+                    Exemplo:
+                </p>
+                <div align="center">
+                    <img src="{%static 'img/how_make_datas.png'%}" alt="imagem de modelo de planilha CSV">
+                </div>
+                <br>
+                <br>
+                <p>Assim que concluído, salve a planilha em formato <a href="https://rockcontent.com/br/blog/csv/" target="_blank">CSV</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {%endblock%}

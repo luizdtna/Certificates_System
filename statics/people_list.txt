@@ -1,4 +1,3 @@
-Maria Antonio,Maria123@aaa.com
-Luiz,luiz.araujodtna@gmail.com
-alguém AQUI,alguem@gmail.com
-teste1,pessoa.ara.tew@ead.ufvjm.edu.nadamais.br
+Maria Antonio;maria@gmail.com
+Luiz Araujo Lindo;luiz.araujodtna@gmail.com
+alguém AQUI;alguem@gmail.com

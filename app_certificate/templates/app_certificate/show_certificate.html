@@ -5,7 +5,7 @@
 
 {%block main%}
 
-<h2>{{user.first_name|title}}</h2>
+<h3>{{user.first_name|title}}</h3>
 
 
 {%for i in date%}
@@ -17,7 +17,7 @@
     <div class="media-body">
         <h5 class="mt-0">{{i.certificateTitle|title}}</h5>
 
-        <p>Data: {{i.update_date|date:"d/m/Y"}}</p>
+        <p>Data: {{i.date|date:"d/m/Y"}}</p>
     </div>
 </div>
 {%empty%}

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrapform',
     'app_certificate',
     'app_management',
 ]
@@ -131,7 +132,7 @@ MEDIA_URL = '/uploads/'
 MEDIA_ROOT = 'uploads'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/certificado/'
+LOGIN_REDIRECT_URL = '/certificados/'
 
 
 AUTH_USER_MODEL = 'app_certificate.CustomUser'

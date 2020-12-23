@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+
+{%block main%}
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Certificados</th>
+                <th scope="col">Administrador</th>
+            </tr>
+            </thead>
+            <tbody>
+            {%for pessoa in object_list%}
+            <tr>
+                <th scope="row">{{pessoa.id}}</th>
+                <td><a href="{%url 'update_person_url' pessoa.id %}">{{pessoa.get_full_name}}</a></td>
+                <td><a href="{%url 'update_person_url' pessoa.id %}">{{pessoa.email}}</a></td>
+                <td>
+                    <span style="font-size: 2rem;">
+                        <a href="{%url 'person_certificates_url' pessoa.id%}" class="text-info"><i class="fas fa-file-invoice"></i></a>
+                    </span>
+                </td>
+                <td>{%if pessoa.is_staff%}Sim{%else%}Não{%endif%}</td>
+
+
+            </tr>
+            {%endfor%}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock%}

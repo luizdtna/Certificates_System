@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{%static 'css/sticky-footer.css' %}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <title>{% block title %}{% endblock title%}</title>
 </head>
@@ -19,7 +20,17 @@
 <header>
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark mb-5">
-        <img src="{%static 'img/ead.png'%}" width="120"  alt="">
+
+        {%if user.is_staff%}
+        <a href="{%url 'gestao_url'%}">
+            <img src="{%static 'img/ead.png'%}" width="120" alt="">
+        </a>
+        {%else%}
+        <a href="{%url 'certificado_url'%}">
+            <img src="{%static 'img/ead.png'%}" width="120" alt="">
+        </a>
+        {%endif%}
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,7 +44,10 @@
             </ul>
             <ul class="navbar-nav ml">
                 <li class="nav-item active">
+
+                    {%if not user.is_anonymous %}
                     <a class="btn btn-sm btn-outline-secondary" href="{%url 'logout_url'%}">Logout</a>
+                    {%endif%}
                 </li>
             </ul>
         </div>
@@ -46,7 +60,7 @@
 </div>
 <footer class="footer" style="background: black">
     <div class="container" align="center">
-        <span class="text-muted">Place sticky footer content here.</span>
+        <span class="text-muted">Sistemas de Certificados e Declarações. Developed by: DEAD.</span>
     </div>
 </footer>
 

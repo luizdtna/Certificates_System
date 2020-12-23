@@ -2,6 +2,7 @@
 
 {%block main%}
 
+<h3>{{user.first_name|title}}</h3>
 <div class="row mt-4 pt-4">
     <div class="col">
         <div class="card bg-info text-white mx-auto">
@@ -15,7 +16,7 @@
         <div class="card bg-success text-white align-item-center">
             <div class="card-body">Pessoas</div>
             <div class="card-footer d-flex align-items-center justify-content-between">
-                <a class="small text-white stretched-link" href="#">Realizar operação</a>
+                <a class="small text-white stretched-link" href="{%url 'pessoas_url'%}">Realizar operação</a>
             </div>
         </div>
     </div>

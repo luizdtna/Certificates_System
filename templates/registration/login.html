@@ -1,31 +1,57 @@
+{%extends 'base.html'%}
+{%load bootstrap%}
+
+{%block title%}Login{%endblock%}
+
+{%block main%}
 {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
+<div class="alert alert-warning" role="alert">
+    Seu e-mail ou senha está incorreto.
+</div>
+{% endif %}
 
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
-    {% endif %}
-  {% endif %}
+{% if next %}
+{% if user.is_authenticated %}
+<p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+{% else %}
+<div class="alert alert-warning" role="alert">
+    Por favor, faça login para ver essa página.
+</div>
+{% endif %}
+{% endif %}
 
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next }}" />
-  </form>
+<h1 align="center">Sistema de Certificados e Declarações</h1>
 
-  {# Assumes you setup the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Sign In</h5>
+                    <form method="post">
+                        {%csrf_token%}
+                        <div class="form-label-group mb-2">
+
+                            {{form.username|bootstrap}}
+                        </div>
+
+                        <div class="form-label-group mb-2">
+
+                            {{form.password|bootstrap}}
+
+                        </div>
+                        <input type="hidden" name="next" value="{{ next }}"/>
+
+                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Acessar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>

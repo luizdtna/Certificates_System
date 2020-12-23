@@ -1,0 +1,13 @@
+{%extends 'base.html'%}
+{%load bootstrap%}
+{%block title%}Pessoa{%endblock%}
+
+{%block main%}
+<form method="post">
+    {%csrf_token%}
+    {{form.first_name|bootstrap}}
+    {{form.last_name|bootstrap}}
+    {{form.email|bootstrap}}
+    <button type="submit" class="btn btn-success">Salvar</button>
+</form>
+{%endblock%}

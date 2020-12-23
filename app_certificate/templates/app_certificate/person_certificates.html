@@ -1,0 +1,28 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{%block title%}Certificados{%endblock%}
+
+{%block main%}
+
+{%for certificate in certificates%}
+
+<div class="media mt-3">
+    <a href="{%url 'update_certificate_url' certificate.id%}">
+        <img class="mr-3" src="{% static 'img/certificate_img.png'%}" alt="Icone Certificado" width="100">
+    </a>
+    <div class="media-body">
+        <h5 class="mt-0">{{certificate.certificateTitle|title}}</h5>
+
+        <p>Data: {{certificate.date|date:"d/m/Y"}}</p>
+    </div>
+</div>
+{%empty%}
+<div class="alert alert-warning" role="alert">
+  Essa pessoa não possui arquivos para serem exibidos
+</div>
+
+{%endfor%}
+
+
+{%endblock%}

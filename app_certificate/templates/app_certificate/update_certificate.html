@@ -1,0 +1,15 @@
+{%extends 'base.html'%}
+{%load bootstrap%}
+{%block title%}Atualizar Certificado{%endblock%}
+
+{%block main%}
+<form method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    {{form.certificateTitle|bootstrap}}
+    {{form.date|bootstrap}}
+    {{form.certificate|bootstrap}}
+    <button type="submit" class="btn btn-success">Salvar</button>
+</form>
+
+
+{%endblock%}

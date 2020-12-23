@@ -1,2 +1,8 @@
-  <p>Logged out!</p>
-  <a href="{% url 'login'%}">Click here to login again.</a>
+{%extends 'base.html'%}
+
+{%block main%}
+<div class="alert alert-info" role="alert">
+    Você saiu do sistema
+</div>
+<a href="{% url 'login'%}">Clique aqui para logar novamente.</a>
+{%endblock%}
