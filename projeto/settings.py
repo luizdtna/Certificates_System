@@ -27,7 +27,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['certificadosdead.herokuapp.com/','localhost']
+ALLOWED_HOSTS = ['certificadosdead.herokuapp.com','localhost']
 
 
 # Application definition
