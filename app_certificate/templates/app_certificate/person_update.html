@@ -4,12 +4,6 @@
 
 {%block main%}
 
-{%if success%}
-<div class="alert alert-success" role="alert">
-    O registro foi atualizado com sucesso!
-</div>
-{%endif%}
-
 <form method="post">
     {%csrf_token%}
     {{form.first_name|bootstrap}}
