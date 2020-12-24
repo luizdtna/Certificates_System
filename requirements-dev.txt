@@ -4,6 +4,7 @@ dj-static==0.0.6
 Django==3.1.4
 django-bootstrap-form==3.4
 lml==0.1.0
+python-decouple==3.3
 pytz==2020.4
 sqlparse==0.4.1
 static3==0.7.0
