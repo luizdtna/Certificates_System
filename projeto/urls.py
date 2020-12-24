@@ -19,14 +19,12 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from app_certificate import urls as certificates_urls
 from app_management import urls as managements_url
-from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views
 from app_certificate.views import My_Login
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('',TemplateView.as_view(template_name='gestao.html'), name = 'home_url'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('',include(certificates_urls)),
     path('gerenciar/',include(managements_url)),
