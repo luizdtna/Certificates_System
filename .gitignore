@@ -7,3 +7,6 @@ uploads
 *.pyc
 *.pyo
 statics/people_list.txt
+.env
+*.env
+.env

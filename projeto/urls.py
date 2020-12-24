@@ -32,7 +32,7 @@ urlpatterns = [
     path('gerenciar/',include(managements_url)),
     path('problemas/',TemplateView.as_view(template_name='relatar_problemas.html'),name='problemas_url'),
 
-    path('login/', My_Login.as_view(), name='login'),
+    path('', My_Login.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout_url'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

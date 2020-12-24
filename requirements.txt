@@ -1,0 +1,3 @@
+-r requirements-dev.txt
+python-decouple==3.3
+gunicorn

@@ -7,25 +7,32 @@
 
 <h3>{{user.first_name|title}}</h3>
 
+<div class="row">
+    {%for i in date%}
+    <div class="col-6 mb-3">
+        <div class="container-fluid cxt-padded bg-faded">
 
-{%for i in date%}
+            <div class="row">
+                <a href="{{ i.certificate.url }}">
+                    <img class="mr-2" src="{% static 'img/certificate_img.png'%}" alt="Icone Certificado" width="150">
+                </a>
+                <div class="col-md-4">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{i.certificateTitle|title}}</h5>
 
-<div class="media mt-3">
-    <a href="{{ i.certificate.url }}">
-        <img class="mr-3" src="{% static 'img/certificate_img.png'%}" alt="Icone Certificado" width="150">
-    </a>
-    <div class="media-body">
-        <h5 class="mt-0">{{i.certificateTitle|title}}</h5>
+                        <p>Data: {{i.date|date:"d/m/Y"}}</p>
+                    </div>
+                </div>
+            </div>
 
-        <p>Data: {{i.date|date:"d/m/Y"}}</p>
+        </div>
     </div>
+
+    {%empty%}
+    <div class="alert alert-warning" role="alert">
+        Você não possui arquivos para serem exibidos
+    </div>
+
+    {%endfor%}
 </div>
-{%empty%}
-<div class="alert alert-warning" role="alert">
-  Você não possui arquivos para serem exibidos
-</div>
-
-{%endfor%}
-
-
 {%endblock%}

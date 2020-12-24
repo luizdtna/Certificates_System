@@ -179,26 +179,31 @@ class ShowCertificate(LoginRequiredMixin,View):
 
     def get(self, request, *args, **kwargs):
 
-        date = Certificate.objects.filter(user__id=request.user.id)
+        date = Certificate.objects.filter(user__id=request.user.id).order_by('date')
         if request.user.is_staff:
             pass
         return render(request,'app_certificate/show_certificate.html',{'date':date})
 
-class ListPeople(ListView):
+class ListPeople(LoginRequiredMixin,ListView):
     model = CustomUser
     template_name = 'app_certificate/people_list.html'
 
-class PersonUpdate(UpdateView):
+class PersonUpdate(LoginRequiredMixin,UpdateView):
     model = CustomUser
     fields = ['first_name','last_name','email']
     template_name = 'app_certificate/person_update.html'
     success_url = reverse_lazy('pessoas_url')
 
-class RemoveCertificate(View):
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+        return self.render_to_response({'form':form, 'success':True})
+
+
+class RemoveCertificate(LoginRequiredMixin,View):
     #nada = Certificate.objects.filter()
     outracoisa = Certificate._delete_file("uploads/certificates/museo3.jpg")
 
-class person_certificates(View):
+class person_certificates(LoginRequiredMixin,View):
 
     def get(self, request, *args, **kwargs):
 
@@ -207,8 +212,13 @@ class person_certificates(View):
 
         return render(request,'app_certificate/person_certificates.html',{'certificates':certificates})
 
-class update_certificate(UpdateView):
+class update_certificate(LoginRequiredMixin,UpdateView):
+    #TODO: Precisarei trocar mudar a forma que os dados são atualizados, isso porque o arquivo não é sobrescrito pelo novo, ficando o lixo armazenado.
     model = Certificate
     fields = ['certificate','date','certificateTitle']
     template_name = 'app_certificate/update_certificate.html'
     success_url = reverse_lazy('pessoas_url')
+
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+        return self.render_to_response({'form':form, 'success':True})
