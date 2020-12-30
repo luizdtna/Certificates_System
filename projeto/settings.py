@@ -17,7 +17,6 @@ from dj_database_url import parse as dburl
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -27,8 +26,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['certificadosdead.herokuapp.com','localhost']
-
+ALLOWED_HOSTS = ['certificadosdead.herokuapp.com', 'localhost']
 
 # Application definition
 
@@ -42,6 +40,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'app_certificate',
     'app_management',
+    'django_cleanup', # Vai limpar os arquivos(Files) quando este não tiver mais refecência em algum objeto(Model)
 ]
 
 MIDDLEWARE = [
@@ -59,7 +58,7 @@ ROOT_URLCONF = 'projeto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')], #Para encontrar templates na pasta raiz
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Para encontrar templates na pasta raiz
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,15 +73,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'projeto.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
-DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
-
-
-
+DATABASES = {'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -102,7 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -116,12 +110,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATICFILES_DIRS = [
-   'statics', #Quando o django procurar por arquivos estáticos
+    'statics',  # Quando o django procurar por arquivos estáticos
     # (imagens, css,js...), vai procurar nesse arquivo, na Raiz
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
