@@ -22,9 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+#DEBUG = config('DEBUG', default=False, cast=bool)
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['certificadosdead.herokuapp.com', 'localhost']
 
@@ -128,5 +127,3 @@ LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/certificados/'
 
 AUTH_USER_MODEL = 'app_certificate.CustomUser'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
