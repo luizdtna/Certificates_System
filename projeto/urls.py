@@ -22,7 +22,6 @@ from app_management import urls as managements_url
 from django.contrib.auth import views as auth_views
 from app_certificate.views import My_Login
 from django.views.generic.base import TemplateView
-from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
