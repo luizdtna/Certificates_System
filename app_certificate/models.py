@@ -69,6 +69,7 @@ class CustomUser(AbstractUser):
         self.last_name = self.last_name.title()
         return super(CustomUser, self).save(*args, **kwargs)
 
+
 class Certificate(models.Model):
     certificateTitle = models.CharField(max_length=254)
     certificate = models.FileField(upload_to='certificates', max_length=254)

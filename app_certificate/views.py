@@ -212,8 +212,8 @@ class person_certificates(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         certificates = Certificate.objects.filter(user__pk=kwargs['pk']).order_by('date')
-
-        return render(request, 'app_certificate/person_certificates.html', {'certificates': certificates})
+        user = CustomUser.objects.get(pk=kwargs['pk'])
+        return render(request, 'app_certificate/person_certificates.html', {'certificates': certificates, 'user': user})
 
 
 class update_certificate(LoginRequiredMixin, UpdateView):

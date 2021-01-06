@@ -5,10 +5,12 @@
 
 {%block main%}
 
+<h3>Certificados de {{user.get_full_name}}:</h3>
 
 
 <div class="row">
     {%for certificate in certificates%}
+
     <div class="col-6 mb-3">
         <div class="container-fluid cxt-padded bg-faded">
 
