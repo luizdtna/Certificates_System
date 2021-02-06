@@ -25,8 +25,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['certificadosdead.herokuapp.com', 'localhost']
-
+ALLOWED_HOSTS = [config('ALLOWED_HOSTS_1'), config('ALLOWED_HOSTS_2')]
 # Application definition
 
 INSTALLED_APPS = [
@@ -75,8 +74,19 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
-DATABASES = {'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
+#default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+#DATABASES = {'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -129,3 +139,8 @@ LOGIN_REDIRECT_URL = '/certificados/'
 AUTH_USER_MODEL = 'app_certificate.CustomUser'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
