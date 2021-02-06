@@ -24,11 +24,13 @@ class My_Login(LoginView):
     authentication_form = CustomAuthenticationForm
 
     def get_success_url(self):
+
         if self.request.user.is_staff:
             url = resolve_url('gestao_url')
+            return url
         else:
-            url = self.get_redirect_url()
-        return url or resolve_url(settings.LOGIN_REDIRECT_URL)
+            return super(My_Login, self).get_success_url()
+
 
 
 class GestaoHome(LoginRequiredMixin, View):

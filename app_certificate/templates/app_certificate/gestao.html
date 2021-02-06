@@ -2,7 +2,7 @@
 
 {%block main%}
 
-<h3>{{user.first_name|title}}</h3>
+<h3>{{request.user.get_full_name|title}}</h3>
 <div class="row mt-4 pt-4">
     <div class="col">
         <div class="card bg-info text-white mx-auto">
