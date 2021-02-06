@@ -7,6 +7,7 @@ django-cleanup==5.1.0
 gunicorn==20.0.4
 lml==0.1.0
 psycopg2-binary==2.8.6
+PyMySQL==1.0.2
 python-decouple==3.3
 pytz==2020.4
 sqlparse==0.4.1
