@@ -59,6 +59,10 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    @property
+    def nome_todo(self):
+        return f'{self.first_name} {self.last_name}'
+
     def __str__(self):
         return self.email
 

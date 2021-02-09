@@ -10,11 +10,12 @@ from django.views.generic import FormView, UpdateView
 from django.contrib import messages
 from projeto import settings
 from .models import Certificate, CustomUser
-from .forms import NewCertificatesForm, CustomAuthenticationForm
+from .forms import NewCertificatesForm, CustomAuthenticationForm, Search_Person_Form
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.db.models import Q
 
 
 # Create your views here.
@@ -30,7 +31,6 @@ class My_Login(LoginView):
             return url
         else:
             return super(My_Login, self).get_success_url()
-
 
 
 class GestaoHome(LoginRequiredMixin, View):
@@ -124,12 +124,14 @@ class FileFieldView(LoginRequiredMixin, FormView):
                     ' tem mais registros que o outro. Verifique se os arquivos são correspondente.\n'
             return erro
 
+
     def get(self, request, *args, **kwargs):
-        if not request.user.is_staff:
+        if request.user.is_staff:
+            aux = super(FileFieldView, self).get(request, *args, **kwargs)
+            return aux
+        else:
             # Se o usuário não for staff, ele não pode acessar essa view
             return redirect('certificado_url')
-        else:
-            return render(request, 'app_certificate/upload.html', {'form': self.form_class})
 
     def post(self, request, *args, **kwargs):
 
@@ -190,6 +192,28 @@ class ShowCertificate(LoginRequiredMixin, View):
 class ListPeople(LoginRequiredMixin, ListView):
     model = CustomUser
     template_name = 'app_certificate/people_list.html'
+    search_person_form = Search_Person_Form
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            aux = super(ListPeople, self).get(request, args, kwargs)
+            return aux
+        else:
+            return redirect('certificado_url')
+
+    def get_context_data(self, **kwargs):
+        context = super(ListPeople, self).get_context_data(**kwargs)
+        context['form'] = self.search_person_form
+        return context
+
+    def post(self, request):
+        form = self.search_person_form(self.request.POST)
+        if form.is_valid():
+            # filtra por nome OU email
+            list = CustomUser.objects.filter(
+                Q(first_name__contains=request.POST['name']) | Q(email=request.POST['name']))
+            context = self.get_context_data(object_list=list)
+        return render(request, self.template_name, context)
 
 
 class PersonUpdate(LoginRequiredMixin, UpdateView):
@@ -197,6 +221,13 @@ class PersonUpdate(LoginRequiredMixin, UpdateView):
     fields = ['first_name', 'last_name', 'email']
     template_name = 'app_certificate/person_update.html'
     success_url = reverse_lazy('pessoas_url')
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            aux = super(PersonUpdate, self).get(request, args, kwargs)
+            return aux
+        else:
+            return redirect('certificado_url')
 
     def form_valid(self, form):
         messages.success(self.request, "Os dados foram atualizados com sucesso!")
@@ -213,17 +244,31 @@ class RemoveCertificate(LoginRequiredMixin, View):
 class person_certificates(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        certificates = Certificate.objects.filter(user__pk=kwargs['pk']).order_by('date')
-        user = CustomUser.objects.get(pk=kwargs['pk'])
-        return render(request, 'app_certificate/person_certificates.html', {'certificates': certificates, 'user': user})
+
+        if request.user.is_staff:
+            certificates = Certificate.objects.filter(user__pk=kwargs['pk']).order_by('date')
+            user = CustomUser.objects.get(pk=kwargs['pk'])
+            return render(request, 'app_certificate/person_certificates.html',
+                          {'certificates': certificates, 'user': user})
+        else:
+            # Se o usuário não for staff, ele não pode acessar essa view
+            return redirect('certificado_url')
 
 
 class update_certificate(LoginRequiredMixin, UpdateView):
-    # TODO: Precisarei trocar mudar a forma que os dados são atualizados, isso porque o arquivo não é sobrescrito pelo novo, ficando o lixo armazenado.
+    # TODO: Precisarei trocar mudar a forma que os dados são atualizados, isso porque o arquivo não é sobrescrito
+    #  pelo novo, ficando o lixo armazenado.
     model = Certificate
     fields = ['certificate', 'date', 'certificateTitle']
     template_name = 'app_certificate/update_certificate.html'
     success_url = reverse_lazy('pessoas_url')
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            aux = super(update_certificate, self).get(request, args, kwargs)
+            return aux
+        else:
+            return redirect('certificado_url')
 
     def form_valid(self, form):
         messages.success(self.request, "Os dados foram atualizados com sucesso!")

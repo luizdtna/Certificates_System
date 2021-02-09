@@ -28,5 +28,7 @@ class NewCertificatesForm(forms.Form):
     certificates = forms.FileField(
         widget=forms.ClearableFileInput(attrs={'multiple': True}), label='Certificados')
 
+class Search_Person_Form(forms.Form):
+    name = forms.CharField(label='Pesquisa por nome ou email')
 
 

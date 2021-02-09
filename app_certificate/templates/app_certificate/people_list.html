@@ -1,16 +1,27 @@
 {% extends 'base.html'%}
-
+{%load bootstrap%}
 {%block main%}
 
 {% if messages %}
 <div class="alert alert-success">
     {% for m in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ m }}</li>
+    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ m }}</li>
     {% endfor %}
 </div>
 {% endif %}
 
 <div class="container-fluid">
+    <form method="post">
+        <div class="form-row align-items-center">
+            <div class="col-5 mb-3">
+                {%csrf_token%}
+                {{form|bootstrap}}
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-success" type="submit">Filtrar</button>
+            </div>
+        </div>
+    </form>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -30,7 +41,8 @@
                 <td><a href="{%url 'update_person_url' pessoa.id %}">{{pessoa.email}}</a></td>
                 <td>
                     <span style="font-size: 2rem;">
-                        <a href="{%url 'person_certificates_url' pessoa.id%}" class="text-info"><i class="fas fa-file-invoice"></i></a>
+                        <a href="{%url 'person_certificates_url' pessoa.id%}" class="text-info"><i
+                                class="fas fa-file-invoice"></i></a>
                     </span>
                 </td>
                 <td>{%if pessoa.is_staff%}Sim{%else%}Não{%endif%}</td>
