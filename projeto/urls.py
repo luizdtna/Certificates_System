@@ -30,7 +30,7 @@ urlpatterns = [
     path('gerenciar/',include(managements_url)),
     path('problemas/',TemplateView.as_view(template_name='relatar_problemas.html'),name='problemas_url'),
 
-    path('login/', My_Login.as_view(), name='login'),
+    path('login/', My_Login.as_view(), name='login'), #Se alterar a url, precisa alterar settings.LOGIN_URL
     path('logout/', auth_views.LogoutView.as_view(), name='logout_url'),
     re_path(r'^uploads/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = 'uploads'
 
-LOGIN_URL = '/'
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/certificados/'
 
 AUTH_USER_MODEL = 'app_certificate.CustomUser'

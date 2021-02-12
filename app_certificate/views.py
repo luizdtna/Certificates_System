@@ -193,6 +193,7 @@ class ListPeople(LoginRequiredMixin, ListView):
     model = CustomUser
     template_name = 'app_certificate/people_list.html'
     search_person_form = Search_Person_Form
+    ordering = 'first_name' # Ordenação da Queryset
 
     def get(self, request, *args, **kwargs):
         if request.user.is_staff:
