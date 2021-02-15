@@ -35,17 +35,70 @@ class My_Login(LoginView):
 
 class GestaoHome(LoginRequiredMixin, View):
 
-    def get(self, request):
-        if request.user.is_staff:
-            return render(request, 'app_certificate/gestao.html')
-        else:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
             return redirect('certificado_url')
+        return super(GestaoHome, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        return render(request, 'app_certificate/gestao.html')
 
 
 class FileFieldView(LoginRequiredMixin, FormView):
     form_class = NewCertificatesForm
     template_name = 'app_certificate/upload.html'  # Replace with your template.
     success_url = reverse_lazy('uploadcertificados_url')  # Replace with your URL or reverse().
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect('certificado_url')
+        return super(FileFieldView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+
+        global nomes, emails
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        certificates = request.FILES.getlist('certificates')
+        people = request.FILES['people']
+
+        result = ''
+        if form.is_valid():
+            try:
+                is_valid = self.writeListPeople(people)
+                if is_valid:
+                    nomes, emails = self.list_to_vector(request.POST['separador'])
+                    result = self.data_isValid(nomes, emails, certificates)
+                else:
+                    result += 'ERRO: O arquivo de pessoas tem o formato inválido, ' \
+                              'é necessário o formato .csv'
+            except IndexError:
+                result += 'ERRO: Selecione o separador correto(virgula ou ponto e virgula)\n'
+
+            if result == True:
+
+                for n, e, f in zip(nomes, emails, certificates):
+
+                    try:
+                        person = CustomUser.objects.get(email=e)
+                    except CustomUser.DoesNotExist:
+                        # If there's not this person
+                        person = CustomUser.objects.create_user(email=e, password='321321', first_name=n, last_name='')
+                        person.save()
+
+                    new_certificate = Certificate(certificateTitle=form.data['certificateTitle'], certificate=f,
+                                                  date=form.data['date'], user=person)
+                    new_certificate.save()
+
+                    # filetest = TesteModel(fileTest=f)
+                    # filetest.save()
+            else:
+                erros = [result]
+                print('here')
+                return render(request, 'app_certificate/erros.html', {'erros': erros})
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
     def form_valid(self, form):
         """If the form is valid, redirect to the supplied URL."""
@@ -125,61 +178,6 @@ class FileFieldView(LoginRequiredMixin, FormView):
             return erro
 
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_staff:
-            aux = super(FileFieldView, self).get(request, *args, **kwargs)
-            return aux
-        else:
-            # Se o usuário não for staff, ele não pode acessar essa view
-            return redirect('certificado_url')
-
-    def post(self, request, *args, **kwargs):
-
-        global nomes, emails
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        certificates = request.FILES.getlist('certificates')
-        people = request.FILES['people']
-
-        result = ''
-        if form.is_valid():
-            try:
-                is_valid = self.writeListPeople(people)
-                if is_valid:
-                    nomes, emails = self.list_to_vector(request.POST['separador'])
-                    result = self.data_isValid(nomes, emails, certificates)
-                else:
-                    result += 'ERRO: O arquivo de pessoas tem o formato inválido, ' \
-                              'é necessário o formato .csv'
-            except IndexError:
-                result += 'ERRO: Selecione o separador correto(virgula ou ponto e virgula)\n'
-
-            if result == True:
-
-                for n, e, f in zip(nomes, emails, certificates):
-
-                    try:
-                        person = CustomUser.objects.get(email=e)
-                    except CustomUser.DoesNotExist:
-                        # If there's not this person
-                        person = CustomUser.objects.create_user(email=e, password='321321', first_name=n, last_name='')
-                        person.save()
-
-                    new_certificate = Certificate(certificateTitle=form.data['certificateTitle'], certificate=f,
-                                                  date=form.data['date'], user=person)
-                    new_certificate.save()
-
-                    # filetest = TesteModel(fileTest=f)
-                    # filetest.save()
-            else:
-                erros = [result]
-                print('here')
-                return render(request, 'app_certificate/erros.html', {'erros': erros})
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-
 class ShowCertificate(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
@@ -193,14 +191,12 @@ class ListPeople(LoginRequiredMixin, ListView):
     model = CustomUser
     template_name = 'app_certificate/people_list.html'
     search_person_form = Search_Person_Form
-    ordering = 'first_name' # Ordenação da Queryset
+    ordering = 'first_name'  # Ordenação da Queryset
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_staff:
-            aux = super(ListPeople, self).get(request, args, kwargs)
-            return aux
-        else:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
             return redirect('certificado_url')
+        return super(ListPeople, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(ListPeople, self).get_context_data(**kwargs)
@@ -223,14 +219,14 @@ class PersonUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'app_certificate/person_update.html'
     success_url = reverse_lazy('pessoas_url')
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_staff:
-            aux = super(PersonUpdate, self).get(request, args, kwargs)
-            return aux
-        else:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
             return redirect('certificado_url')
+        return super(PersonUpdate, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        # TODO: Melhorar a implementação desse método,
+        #  retornar utilizando a classe pai, não reemplementá-lo
         messages.success(self.request, "Os dados foram atualizados com sucesso!")
 
         super().form_valid(form)
@@ -244,16 +240,16 @@ class RemoveCertificate(LoginRequiredMixin, View):
 
 class person_certificates(LoginRequiredMixin, View):
 
-    def get(self, request, *args, **kwargs):
-
-        if request.user.is_staff:
-            certificates = Certificate.objects.filter(user__pk=kwargs['pk']).order_by('date')
-            user = CustomUser.objects.get(pk=kwargs['pk'])
-            return render(request, 'app_certificate/person_certificates.html',
-                          {'certificates': certificates, 'user': user})
-        else:
-            # Se o usuário não for staff, ele não pode acessar essa view
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
             return redirect('certificado_url')
+        return super(person_certificates, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        certificates = Certificate.objects.filter(user__pk=kwargs['pk']).order_by('date')
+        user = CustomUser.objects.get(pk=kwargs['pk'])
+        return render(request, 'app_certificate/person_certificates.html',
+                      {'certificates': certificates, 'user': user})
 
 
 class update_certificate(LoginRequiredMixin, UpdateView):
@@ -264,12 +260,10 @@ class update_certificate(LoginRequiredMixin, UpdateView):
     template_name = 'app_certificate/update_certificate.html'
     success_url = reverse_lazy('pessoas_url')
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_staff:
-            aux = super(update_certificate, self).get(request, args, kwargs)
-            return aux
-        else:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
             return redirect('certificado_url')
+        return super(update_certificate, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         messages.success(self.request, "Os dados foram atualizados com sucesso!")
